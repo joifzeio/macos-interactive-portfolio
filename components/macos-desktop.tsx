@@ -104,9 +104,9 @@ export function MacOSDesktop() {
               position: { x: window.innerWidth - 120, y: 50 },
             },
             {
-              id: "market",
-              app: "market",
-              label: "Q4 Market Analysis",
+              id: "readme",
+              app: "readme",
+              label: "README.md",
               icon: DocumentsIcon,
               position: { x: window.innerWidth - 120, y: 160 },
             },
