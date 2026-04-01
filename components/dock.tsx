@@ -12,7 +12,7 @@ import {
   VSCodeIcon,
   TerminalIcon,
   DockerIcon,
-  GitIcon,
+  GitHubIcon,
   LaunchpadIcon,
 } from "./app-icons"
 
@@ -33,7 +33,7 @@ const dockApps = [
   { id: "vscode" as AppType, icon: VSCodeIcon, label: "VS Code" },
   { id: "terminal" as AppType, icon: TerminalIcon, label: "Terminal" },
   { id: "docker" as AppType, icon: DockerIcon, label: "Docker" },
-  { id: "git" as AppType, icon: GitIcon, label: "Git Bash" },
+  { id: "github" as AppType, icon: GitHubIcon, label: "GitHub" },
 ]
 
 export function Dock({ onAppClick, minimizedWindows, onUnminimize, onLaunchpadClick, openApps, isMobile }: DockProps) {

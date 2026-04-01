@@ -41,7 +41,7 @@ export type AppType =
   | "vscode"
   | "terminal"
   | "docker"
-  | "git"
+  | "github"
   | "strategy"
   | "market"
   | "ops"
@@ -359,7 +359,7 @@ export function MacOSDesktop() {
         return <Terminal />
       case "docker":
         return <Docker />
-      case "git":
+      case "github":
         return <GitBash />
       case "web-shortcut":
         return <WebShortcut id={app} name={title} />
