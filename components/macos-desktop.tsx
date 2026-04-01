@@ -99,13 +99,6 @@ export function MacOSDesktop() {
           // Initial setup
           return [
             {
-              id: "strategy",
-              app: "strategy",
-              label: "Enterprise Strategy",
-              icon: FolderIcon,
-              position: { x: window.innerWidth - 120, y: 50 },
-            },
-            {
               id: "readme",
               app: "readme",
               label: "README.md",
@@ -119,13 +112,6 @@ export function MacOSDesktop() {
               icon: PhotographyIcon,
               position: mobile ? { x: 140, y: 340 } : { x: 750, y: 550 },
               size: { width: 140, height: 180 },
-            },
-            {
-              id: "downloads",
-              app: "finder",
-              label: "Downloads",
-              icon: DownloadsIcon,
-              position: { x: window.innerWidth - 120, y: 450 },
             },
             {
               id: "ramen",
