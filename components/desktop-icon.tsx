@@ -19,6 +19,7 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
   const [isSelected, setIsSelected] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+  const [hasMoved, setHasMoved] = useState(false)
 
   const scaleFactor = isMobile ? 0.65 : 1
   const isLarge = size && (size.width > 100 || size.height > 100)
@@ -29,7 +30,23 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation()
+      
+      // If we moved the icon, don't trigger a click
+      if (hasMoved) {
+        setHasMoved(false)
+        return
+      }
+
       setIsSelected(true)
+
+      // Mobile: Single click opens app
+      if (isMobile) {
+        onDoubleClick()
+        setTimeout(() => setIsSelected(false), 300)
+        return
+      }
+
+      // Desktop: Double click logic
       const newClicks = clicks + 1
       setClicks(newClicks)
 
@@ -41,12 +58,13 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
         setTimeout(() => setClicks(0), 300)
       }
     },
-    [clicks, onDoubleClick],
+    [clicks, onDoubleClick, isMobile, hasMoved],
   )
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 0) return // Only left click
     setIsDragging(true)
+    setHasMoved(false)
     const rect = e.currentTarget.getBoundingClientRect()
     setDragOffset({
       x: e.clientX - rect.left,
@@ -56,8 +74,9 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      if (isDragging && onPositionChange) {
-        onPositionChange({
+    if (isDragging && onPositionChange) {
+      setHasMoved(true)
+      onPositionChange({
           x: e.clientX - dragOffset.x,
           y: e.clientY - dragOffset.y,
         })
@@ -72,6 +91,7 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setIsDragging(true)
+    setHasMoved(false)
     const touch = e.touches[0]
     const rect = e.currentTarget.getBoundingClientRect()
     setDragOffset({
@@ -83,6 +103,7 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
   const handleTouchMove = useCallback(
     (e: TouchEvent) => {
       if (isDragging && onPositionChange) {
+        setHasMoved(true)
         // Prevent scrolling while dragging
         if (e.cancelable) e.preventDefault()
         const touch = e.touches[0]
