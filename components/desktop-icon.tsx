@@ -146,8 +146,12 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
     <div
       className={`absolute flex flex-col items-center gap-1 transition-all cursor-default select-none group hover:scale-105 ${
         isLarge 
-          ? "bg-[#7c88b4]/40 backdrop-blur-md rounded-2xl shadow-xl border border-white/10" 
-          : `p-2 rounded-lg ${isSelected ? "bg-blue-500/30" : "hover:bg-white/10"}`
+          ? `rounded-2xl transition-all duration-300 ${
+              isSelected 
+                ? "bg-[#7c88b4]/60 backdrop-blur-md shadow-2xl border border-white/20" 
+                : "hover:bg-[#7c88b4]/40 hover:backdrop-blur-md hover:shadow-xl hover:border hover:border-white/10"
+            }`
+          : `p-2 rounded-lg ${isSelected ? "bg-blue-500/30 font-semibold" : "hover:bg-white/10"}`
       } ${isDragging ? "opacity-70 z-50 transition-none" : "z-10"}`}
       style={{
         left: position?.x ?? 0,
