@@ -45,6 +45,7 @@ export type AppType =
   | "strategy"
   | "market"
   | "ops"
+  | "readme"
   | "web-shortcut"
 
 export interface WindowState {
