@@ -17,6 +17,8 @@ interface DesktopIconProps {
 
 export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionChange, size, isMobile }: DesktopIconProps) {
   const [isSelected, setIsSelected] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const constraintsRef = useRef(null)
 
   const scaleFactor = isMobile ? 0.65 : 1
   const isLarge = size && (size.width > 100 || size.height > 100)
@@ -25,6 +27,7 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
   const padding = isMobile ? 10 : 32
 
   const handleDragEnd = (event: any, info: any) => {
+    setIsDragging(false)
     if (onPositionChange) {
       onPositionChange({
         x: (position?.x ?? 0) + info.offset.x,
@@ -38,6 +41,7 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
       drag
       dragMomentum={false}
       dragElastic={0}
+      onDragStart={() => setIsDragging(true)}
       onDragEnd={handleDragEnd}
       onPointerDown={(e) => {
         setIsSelected(true)
@@ -48,7 +52,7 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
       }}
       whileHover={{ scale: isMobile ? 1 : 1.05 }}
       onDoubleClick={() => !isMobile && onDoubleClick()}
-      className={`absolute flex flex-col items-center gap-1 cursor-default select-none group ${
+      className={`absolute flex flex-col items-center gap-1 cursor-default select-none group ${isDragging ? "z-50 transition-none" : "z-10"} ${
         isLarge 
           ? `rounded-2xl transition-all duration-300 ${
               isSelected 
@@ -56,7 +60,7 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
                 : "hover:bg-[#7c88b4]/40 hover:backdrop-blur-md hover:shadow-xl hover:border hover:border-white/10"
             }`
           : `p-2 rounded-lg ${isSelected ? "bg-blue-500/30 font-semibold" : "hover:bg-white/10"}`
-      }`}
+      } ${isDragging ? "transition-none" : ""}`}
       style={{
         left: position?.x ?? 0,
         top: position?.y ?? 0,
