@@ -27,6 +27,7 @@ import { GitBash } from "./apps/git-bash"
 import { DownloadsIcon, FolderIcon, DocumentsIcon, PhotographyIcon, VideoCardIcon } from "./app-icons"
 import { AnimatedWallpaper } from "./animated-wallpaper"
 import { WebShortcut } from "./apps/web-shortcut"
+import { Readme } from "./apps/readme"
 
 export type AppType =
   | "finder"
@@ -346,6 +347,8 @@ export function MacOSDesktop() {
         return <Photos />
       case "music":
         return <Music />
+      case "readme":
+        return <Readme />
       case "notes":
         return <Notes />
       case "vscode":
