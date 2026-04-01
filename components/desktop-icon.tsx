@@ -15,7 +15,6 @@ interface DesktopIconProps {
 }
 
 export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionChange, size, isMobile }: DesktopIconProps) {
-  const [clicks, setClicks] = useState(0)
   const [isSelected, setIsSelected] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
@@ -30,18 +29,17 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
     (e: React.MouseEvent) => {
       e.stopPropagation()
       setIsSelected(true)
-      const newClicks = clicks + 1
-      setClicks(newClicks)
-
-      if (newClicks === 2) {
-        onDoubleClick()
-        setIsSelected(false)
-        setClicks(0)
-      } else {
-        setTimeout(() => setClicks(0), 300)
-      }
     },
-    [clicks, onDoubleClick],
+    [],
+  )
+
+  const handleDoubleClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      onDoubleClick()
+      setIsSelected(false)
+    },
+    [onDoubleClick],
   )
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -136,6 +134,7 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
         touchAction: "none", // Prevent browser handling of touch
       }}
       onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
     >

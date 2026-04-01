@@ -153,6 +153,7 @@ export function MacOSDesktop() {
             if (icon.id === "ramen") return { ...icon, position: { x: 100, y: 100 } }
             if (icon.id === "interfacs") return { ...icon, position: { x: 120, y: 220 } }
             if (icon.id === "photography") return { ...icon, position: { x: 140, y: 340 } }
+            if (icon.id === "readme") return { ...icon, position: { x: 160, y: 460 } }
             
             // For standard icons, move them to the right edge if they are too far right
             if (icon.position.x > window.innerWidth - 80) {
