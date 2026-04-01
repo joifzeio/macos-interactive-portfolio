@@ -2,7 +2,8 @@
 
 import React from "react"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useRef } from "react"
+import { motion, useDragControls } from "framer-motion"
 
 interface DesktopIconProps {
   icon: string | React.ComponentType
@@ -15,11 +16,7 @@ interface DesktopIconProps {
 }
 
 export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionChange, size, isMobile }: DesktopIconProps) {
-  const [clicks, setClicks] = useState(0)
   const [isSelected, setIsSelected] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
-  const [hasMoved, setHasMoved] = useState(false)
 
   const scaleFactor = isMobile ? 0.65 : 1
   const isLarge = size && (size.width > 100 || size.height > 100)
@@ -27,124 +24,31 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
   const iconHeight = (size?.height ?? 64) * scaleFactor
   const padding = isMobile ? 10 : 32
 
-  const handleClick = useCallback(
-    (e: React.MouseEvent) => {
-      e.stopPropagation()
-      
-      // If we moved the icon, don't trigger a click
-      if (hasMoved) {
-        setHasMoved(false)
-        return
-      }
-
-      setIsSelected(true)
-
-      // Mobile: Single click opens app
-      if (isMobile) {
-        onDoubleClick()
-        setTimeout(() => setIsSelected(false), 300)
-        return
-      }
-
-      // Desktop: Double click logic
-      const newClicks = clicks + 1
-      setClicks(newClicks)
-
-      if (newClicks === 2) {
-        onDoubleClick()
-        setIsSelected(false)
-        setClicks(0)
-      } else {
-        setTimeout(() => setClicks(0), 300)
-      }
-    },
-    [clicks, onDoubleClick, isMobile, hasMoved],
-  )
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button !== 0) return // Only left click
-    setIsDragging(true)
-    setHasMoved(false)
-    const rect = e.currentTarget.getBoundingClientRect()
-    setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    })
-  }
-
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-    if (isDragging && onPositionChange) {
-      setHasMoved(true)
+  const handleDragEnd = (event: any, info: any) => {
+    if (onPositionChange) {
       onPositionChange({
-          x: e.clientX - dragOffset.x,
-          y: e.clientY - dragOffset.y,
-        })
-      }
-    },
-    [isDragging, dragOffset, onPositionChange],
-  )
-
-  const handleMouseUp = useCallback(() => {
-    setIsDragging(false)
-  }, [])
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true)
-    setHasMoved(false)
-    const touch = e.touches[0]
-    const rect = e.currentTarget.getBoundingClientRect()
-    setDragOffset({
-      x: touch.clientX - rect.left,
-      y: touch.clientY - rect.top,
-    })
+        x: (position?.x ?? 0) + info.offset.x,
+        y: (position?.y ?? 0) + info.offset.y,
+      })
+    }
   }
-
-  const handleTouchMove = useCallback(
-    (e: TouchEvent) => {
-      if (isDragging && onPositionChange) {
-        setHasMoved(true)
-        // Prevent scrolling while dragging
-        if (e.cancelable) e.preventDefault()
-        const touch = e.touches[0]
-        onPositionChange({
-          x: touch.clientX - dragOffset.x,
-          y: touch.clientY - dragOffset.y,
-        })
-      }
-    },
-    [isDragging, dragOffset, onPositionChange],
-  )
-
-  const handleTouchEnd = useCallback(() => {
-    setIsDragging(false)
-  }, [])
-
-  useEffect(() => {
-    if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove)
-      window.addEventListener("mouseup", handleMouseUp)
-      window.addEventListener("touchmove", handleTouchMove, { passive: false })
-      window.addEventListener("touchend", handleTouchEnd)
-    } else {
-      window.removeEventListener("mousemove", handleMouseMove)
-      window.removeEventListener("mouseup", handleMouseUp)
-      window.removeEventListener("touchmove", handleTouchMove)
-      window.removeEventListener("touchend", handleTouchEnd)
-    }
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove)
-      window.removeEventListener("mouseup", handleMouseUp)
-      window.removeEventListener("touchmove", handleTouchMove)
-      window.removeEventListener("touchend", handleTouchEnd)
-    }
-  }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd])
-
-
 
   return (
-    <div
-      className={`absolute flex flex-col items-center gap-1 transition-all cursor-default select-none group hover:scale-105 ${
+    <motion.div
+      drag
+      dragMomentum={false}
+      dragElastic={0}
+      onDragEnd={handleDragEnd}
+      onPointerDown={(e) => {
+        setIsSelected(true)
+        if (isMobile) {
+          onDoubleClick()
+          setTimeout(() => setIsSelected(false), 300)
+        }
+      }}
+      whileHover={{ scale: isMobile ? 1 : 1.05 }}
+      onDoubleClick={() => !isMobile && onDoubleClick()}
+      className={`absolute flex flex-col items-center gap-1 cursor-default select-none group ${
         isLarge 
           ? `rounded-2xl transition-all duration-300 ${
               isSelected 
@@ -152,17 +56,15 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
                 : "hover:bg-[#7c88b4]/40 hover:backdrop-blur-md hover:shadow-xl hover:border hover:border-white/10"
             }`
           : `p-2 rounded-lg ${isSelected ? "bg-blue-500/30 font-semibold" : "hover:bg-white/10"}`
-      } ${isDragging ? "opacity-70 z-50 transition-none" : "z-10"}`}
+      }`}
       style={{
         left: position?.x ?? 0,
         top: position?.y ?? 0,
         width: isLarge ? `${width + padding * 2}px` : `${width}px`,
         padding: isLarge ? `${padding}px` : undefined,
-        touchAction: "none", // Prevent browser handling of touch
+        zIndex: isSelected ? 50 : 10,
+        touchAction: "none",
       }}
-      onClick={handleClick}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
     >
       {typeof icon === "string" ? (
         <div className="text-5xl pointer-events-none mb-1">{icon}</div>
@@ -181,6 +83,6 @@ export function DesktopIcon({ icon, label, onDoubleClick, position, onPositionCh
       <span className={`font-medium text-white drop-shadow-md text-center break-words w-full pointer-events-none ${isLarge ? (isMobile ? "text-[10px] mt-1" : "text-sm mt-2") : "text-xs mt-1"}`}>
         {label}
       </span>
-    </div>
+    </motion.div>
   )
 }
