@@ -88,19 +88,21 @@ export const NotesIcon = () => (
 )
 
 export const VSCodeIcon = () => (
-  <div className="w-full h-full rounded-[22%] bg-[#1e1e1e] flex items-center justify-center overflow-hidden relative sharp-icon p-1.5">
-    <div className="relative w-full h-full">
-      <Image
-        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3v8w7AQLA19COX4w3UYNrr8IjY3s2S.png"
-        alt="VS Code"
-        fill
-        sizes="256px"
-        quality={100}
-        className="object-contain"
-      />
-    </div>
+  <div className="w-full h-full rounded-[22%] bg-[#ffffff] flex items-center justify-center shadow-lg relative overflow-hidden sharp-icon group border border-gray-200/50">
+    {/* macOS-style subtle gradient overlay */}
+    <div className="absolute inset-0 bg-gradient-to-tr from-gray-100/30 to-transparent" />
+    <Image 
+      src="/vscode.svg" 
+      alt="VS Code" 
+      fill 
+      className="object-contain p-[18%] transition-transform group-hover:scale-105 relative z-10"
+      unoptimized={true}
+    />
   </div>
 )
+
+
+
 
 export const TerminalIcon = () => (
   <div className="w-full h-full rounded-[22%] overflow-hidden relative sharp-icon">

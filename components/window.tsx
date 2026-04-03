@@ -125,7 +125,7 @@ export function Window({
       }}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className={`absolute macos-window-shadow overflow-hidden backdrop-blur-[20px] bg-white/72 border border-white/20 shadow-2xl transition-shadow duration-200 ${
+      className={`absolute flex flex-col macos-window-shadow overflow-hidden backdrop-blur-[20px] bg-white/72 border border-white/20 shadow-2xl transition-shadow duration-200 ${
         isMobile ? "rounded-[20px]" : "rounded-xl"
       } ${
         isDragging ? "shadow-dark-2xl" : ""
@@ -136,7 +136,7 @@ export function Window({
     >
       {/* Title bar */}
       <div
-        className={`window-titlebar ${isMobile ? "h-12" : "h-11"} bg-white/40 border-b border-gray-200/50 flex items-center justify-between px-4 cursor-default select-none group`}
+        className={`window-titlebar flex-shrink-0 ${isMobile ? "h-12" : "h-11"} bg-white/40 border-b border-gray-200/50 flex items-center justify-between px-4 cursor-default select-none group`}
         onPointerDown={(e) => {
           e.stopPropagation()
           dragControls.start(e)
@@ -179,7 +179,7 @@ export function Window({
       </div>
 
       {/* Content */}
-      <div className={`h-[calc(100%-${isMobile ? "48px" : "44px"})] overflow-auto bg-white/60 ${isDragging ? "pointer-events-none" : ""}`}>
+      <div className={`flex-1 flex flex-col overflow-auto bg-white/60 ${isDragging ? "pointer-events-none" : ""}`}>
         {children}
       </div>
 

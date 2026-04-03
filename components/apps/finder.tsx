@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { ChevronRight, Folder, Home, Download, ImageIcon, Music, Video, Grid3x3, List, Search } from "lucide-react"
+import type { AppType } from "../macos-desktop"
 
 interface FinderProps {
   initialFolder?: string
+  onFileOpen?: (appId: AppType, title: string) => void
 }
 
 const sidebarItems = [
@@ -17,27 +19,24 @@ const sidebarItems = [
 ]
 
 const documentsFiles = [
-  { name: "Project Proposal.pdf", type: "file", size: "2.4 MB", modified: "Today, 2:30 PM", icon: "📄" },
-  { name: "Vacation Photos", type: "folder", items: 156, modified: "Yesterday", icon: "📁" },
-  { name: "Budget 2024.xlsx", type: "file", size: "856 KB", modified: "Jan 15, 2024", icon: "📊" },
-  { name: "Meeting Notes", type: "folder", items: 23, modified: "Jan 10, 2024", icon: "📁" },
-  { name: "Design Mockups", type: "folder", items: 45, modified: "Jan 8, 2024", icon: "📁" },
-  { name: "Report.docx", type: "file", size: "1.2 MB", modified: "Jan 5, 2024", icon: "📝" },
-  { name: "Presentation.pptx", type: "file", size: "3.8 MB", modified: "Jan 3, 2024", icon: "📊" },
-  { name: "Code Projects", type: "folder", items: 12, modified: "Dec 28, 2023", icon: "📁" },
+  { name: "README.md", type: "file", size: "4 KB", modified: "Today, 10:30 AM", icon: "📄", appId: "readme" },
+  { name: "Resume.pdf", type: "file", size: "2.4 MB", modified: "Last Week", icon: "📄" },
+  { name: "Projects", type: "folder", items: 3, modified: "Today, 2:30 PM", icon: "📁" },
+  { name: "Saveur_Ramen.app", type: "app", size: "128 MB", modified: "Yesterday", icon: "🍜", appId: "safari", title: "Saveur Ramen" },
+  { name: "Soiree_InterFacs.app", type: "app", size: "64 MB", modified: "Jan 10", icon: "🎉", appId: "safari", title: "Soirée Inter-Facs" },
 ]
 
 const downloadsFiles = [
-  { name: "macOS-installer.dmg", type: "file", size: "12.4 GB", modified: "Today, 3:45 PM", icon: "💿" },
   { name: "VS-Code-Setup.zip", type: "file", size: "156 MB", modified: "Today, 2:15 PM", icon: "📦" },
   { name: "wallpaper-collection.zip", type: "file", size: "45 MB", modified: "Yesterday", icon: "📦" },
-  { name: "node-modules.tar.gz", type: "file", size: "234 MB", modified: "Jan 14, 2024", icon: "📦" },
-  { name: "Screenshot 2024-01-15.png", type: "file", size: "2.1 MB", modified: "Jan 15, 2024", icon: "🖼️" },
-  { name: "invoice-2024.pdf", type: "file", size: "456 KB", modified: "Jan 12, 2024", icon: "📄" },
-  { name: "music-album.zip", type: "file", size: "89 MB", modified: "Jan 10, 2024", icon: "📦" },
 ]
 
-export function Finder({ initialFolder = "Documents" }: FinderProps) {
+const picturesFiles = [
+  { name: "Profile_Photo.jpg", type: "file", size: "3.2 MB", modified: "Jan 15", icon: "🖼️", appId: "photos" },
+  { name: "Project_Screenshots", type: "folder", items: 24, modified: "Yesterday", icon: "📁" },
+]
+
+export function Finder({ initialFolder = "Documents", onFileOpen }: FinderProps) {
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<"list" | "grid">("list")
   const [searchQuery, setSearchQuery] = useState("")
@@ -51,6 +50,8 @@ export function Finder({ initialFolder = "Documents" }: FinderProps) {
     switch (currentFolder) {
       case "Downloads":
         return downloadsFiles
+      case "Pictures":
+        return picturesFiles
       case "Documents":
       default:
         return documentsFiles
@@ -59,6 +60,17 @@ export function Finder({ initialFolder = "Documents" }: FinderProps) {
 
   const files = getCurrentFiles()
   const filteredFiles = files.filter((file) => file.name.toLowerCase().includes(searchQuery.toLowerCase()))
+
+  const handleDoubleClick = (file: any) => {
+    if (file.type === "folder") {
+      // In a more complex app, this would navigate. For now, we'll keep it simple
+      if (file.name === "Projects") setCurrentFolder("Documents")
+      else if (file.name === "Project_Screenshots") setCurrentFolder("Pictures")
+    } else if (file.appId && onFileOpen) {
+      onFileOpen(file.appId as AppType, file.title || file.name)
+    }
+  }
+
 
   return (
     <div className="flex h-full">
@@ -141,12 +153,13 @@ export function Finder({ initialFolder = "Documents" }: FinderProps) {
                     selectedItem === file.name ? "bg-blue-100" : ""
                   }`}
                   onClick={() => setSelectedItem(file.name)}
+                  onDoubleClick={() => handleDoubleClick(file)}
                 >
                   <span className="text-2xl">{file.icon}</span>
                   <div className="flex-1 text-left">
                     <div className="text-sm font-medium">{file.name}</div>
                     <div className="text-xs text-gray-500">
-                      {file.type === "folder" ? `${file.items} items` : file.size} • {file.modified}
+                      {file.type === "folder" ? `${(file as any).items} items` : file.size} • {file.modified}
                     </div>
                   </div>
                 </button>
@@ -161,6 +174,7 @@ export function Finder({ initialFolder = "Documents" }: FinderProps) {
                     selectedItem === file.name ? "bg-blue-100" : ""
                   }`}
                   onClick={() => setSelectedItem(file.name)}
+                  onDoubleClick={() => handleDoubleClick(file)}
                 >
                   <span className="text-5xl">{file.icon}</span>
                   <div className="text-sm font-medium text-center line-clamp-2">{file.name}</div>
@@ -178,4 +192,5 @@ export function Finder({ initialFolder = "Documents" }: FinderProps) {
       </div>
     </div>
   )
+
 }

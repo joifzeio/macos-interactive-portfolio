@@ -13,6 +13,7 @@ import { NotificationCenter } from "./notification-center"
 import { Launchpad } from "./launchpad"
 import { AboutThisMac } from "./about-this-mac"
 import { ControlCenter } from "./control-center"
+import { MenuBar } from "./menu-bar"
 import { Finder } from "./apps/finder"
 import { Safari } from "./apps/safari"
 import { Messages } from "./apps/messages"
@@ -324,7 +325,7 @@ export function MacOSDesktop() {
   const renderAppContent = (app: AppType, title: string) => {
     switch (app) {
       case "finder":
-        return <Finder initialFolder={title} />
+        return <Finder initialFolder={title} onFileOpen={openApp} />
       case "safari":
         return <Safari />
       case "messages":
@@ -366,11 +367,13 @@ export function MacOSDesktop() {
       <div className="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#1e3a5f] to-[#2d5a7b]" />
       <AnimatedWallpaper />
 
-      {/* Top right header */}
-      <div className="absolute top-2 right-4 z-40 flex gap-4 text-sm font-medium text-white select-none drop-shadow-md">
-        <span>Nathan</span>
-        <span>{formatTime(currentTime)}</span>
-      </div>
+      <MenuBar 
+        activeApp={activeApp}
+        onAppleClick={() => setAboutThisMacOpen(true)}
+        onControlCenterClick={() => setControlCenterOpen(!controlCenterOpen)}
+        onSpotlightClick={() => setSpotlightOpen(!spotlightOpen)}
+        onNotificationCenterClick={() => setNotificationCenterOpen(!notificationCenterOpen)}
+      />
 
       <div className="absolute inset-0" onContextMenu={handleDesktopContextMenu}>
         {desktopIcons.map((icon) => (
