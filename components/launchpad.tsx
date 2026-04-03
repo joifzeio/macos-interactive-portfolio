@@ -12,7 +12,7 @@ import {
   VSCodeIcon,
   TerminalIcon,
   DockerIcon,
-  GitIcon,
+  GitHubIcon,
   SettingsIcon,
   VideoCardIcon,
 } from "./app-icons"
@@ -33,7 +33,7 @@ const apps = [
   { id: "vscode" as AppType, icon: VSCodeIcon, label: "VS Code" },
   { id: "terminal" as AppType, icon: TerminalIcon, label: "Terminal" },
   { id: "docker" as AppType, icon: DockerIcon, label: "Docker" },
-  { id: "git" as AppType, icon: GitIcon, label: "Git Bash" },
+  { id: "github" as AppType, icon: GitHubIcon, label: "Git Bash" },
   { id: "settings" as AppType, icon: SettingsIcon, label: "Settings" },
   { id: "web-shortcut" as AppType, icon: () => <VideoCardIcon src="/saveurramenshowcase.mp4" />, label: "Saveur Ramen" },
   { id: "web-shortcut" as AppType, icon: () => <VideoCardIcon src="/interfacsshowcasevideo.mp4" />, label: "Soirée Inter-Facs" },
