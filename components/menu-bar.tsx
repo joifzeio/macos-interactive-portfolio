@@ -86,11 +86,6 @@ export function MenuBar({
           </svg>
         </button>
 
-        <button className="hover:bg-white/10 p-1.5 rounded transition-colors h-full">
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-white/60">
-             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM13 17h-2v-6h2v6zm0-8h-2V7h2v2z" />
-          </svg>
-        </button>
 
         <button 
           onClick={onNotificationCenterClick}

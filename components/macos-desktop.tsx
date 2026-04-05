@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { Info } from "lucide-react"
 import { Dock } from "./dock"
 import { Window } from "./window"
 import { DesktopIcon } from "./desktop-icon"
@@ -77,7 +76,7 @@ interface ContextMenuState {
 
 export function MacOSDesktop() {
   const [windows, setWindows] = useState<WindowState[]>([])
-  const [highestZIndex, setHighestZIndex] = useState(10)
+  const [highestZIndex, setHighestZIndex] = useState(40)
   const [currentTime, setCurrentTime] = useState(new Date())
   const [spotlightOpen, setSpotlightOpen] = useState(false)
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null)
@@ -208,7 +207,7 @@ export function MacOSDesktop() {
 
   const openApp = (app: AppType, title: string) => {
     setLaunchpadOpen(false)
-    setActiveApp(title)
+    setActiveApp(app === "safari" ? "Safari" : title)
     const existingWindow = windows.find((w) => w.app === app && w.title === title && !w.isMinimized)
 
     if (existingWindow) {
@@ -227,13 +226,25 @@ export function MacOSDesktop() {
       return
     }
 
+    let desktopWidth = 900;
+    let desktopHeight = 600;
+    let mobileWidth = window.innerWidth - 40;
+    let mobileHeight = window.innerHeight - 160;
+
+    if (app === "safari") {
+      desktopWidth = Math.min(1280, window.innerWidth - 100);
+      desktopHeight = Math.min(800, window.innerHeight - 100);
+      mobileWidth = window.innerWidth - 16;
+      mobileHeight = window.innerHeight - 120;
+    }
+
     const initialSize = isMobile 
-      ? { width: window.innerWidth - 40, height: window.innerHeight - 160 }
-      : { width: 900, height: 600 }
+      ? { width: mobileWidth, height: mobileHeight }
+      : { width: desktopWidth, height: desktopHeight }
     
     const initialPosition = isMobile
-      ? { x: 20, y: 60 }
-      : { x: 100 + windows.length * 30, y: 80 + windows.length * 30 }
+      ? { x: (window.innerWidth - mobileWidth) / 2, y: 60 }
+      : { x: (window.innerWidth - desktopWidth) / 2 + (windows.length * 20), y: (window.innerHeight - desktopHeight) / 2 + (windows.length * 20) }
 
     const newWindow: WindowState = {
       id: `${app}-${Date.now()}`,
@@ -284,7 +295,7 @@ export function MacOSDesktop() {
     setHighestZIndex(newZIndex)
     const window = windows.find((w) => w.id === id)
     if (window) {
-      setActiveApp(window.title)
+      setActiveApp(window.app === "safari" ? "Safari" : window.title)
     }
   }
 
@@ -327,7 +338,7 @@ export function MacOSDesktop() {
       case "finder":
         return <Finder initialFolder={title} onFileOpen={openApp} />
       case "safari":
-        return <Safari />
+        return <Safari initialUrl={title.startsWith("http") ? title : undefined} />
       case "messages":
         return <Messages />
       case "calendar":
@@ -349,7 +360,7 @@ export function MacOSDesktop() {
       case "github":
         return <GitBash />
       case "web-shortcut":
-        return <WebShortcut id={app} name={title} />
+        return <WebShortcut id={app} name={title} onOpenApp={openApp} />
       default:
         return (
           <div className="p-8 h-full flex flex-col items-center justify-center text-center gap-4 bg-slate-900 text-white">
@@ -398,7 +409,7 @@ export function MacOSDesktop() {
             <Window
               key={window.id}
               id={window.id}
-              title={window.app === "web-shortcut" ? `${window.title.toLowerCase().replace(/\s+/g, "_")}.gif` : window.title}
+              title={window.app === "web-shortcut" ? `${window.title.toLowerCase().replace(/\s+/g, "_")}.gif` : window.app === "safari" ? "Safari" : window.title}
               position={window.position}
               size={window.size}
               zIndex={window.zIndex}
@@ -410,13 +421,6 @@ export function MacOSDesktop() {
               onPositionChange={(pos) => updateWindowPosition(window.id, pos)}
               onSizeChange={(size) => updateWindowSize(window.id, size)}
               isMobile={isMobile}
-              headerRight={
-                window.app === "web-shortcut" ? (
-                  <button className="p-1 hover:bg-gray-200 rounded-full transition-colors">
-                    <Info className="w-4 h-4 text-gray-400" />
-                  </button>
-                ) : null
-              }
             >
               {renderAppContent(window.app, window.title)}
             </Window>

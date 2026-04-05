@@ -18,21 +18,21 @@ const projectData: Record<string, Omit<WebShortcutProps, "id" | "name">> = {
     videoSrc: "/saveurramenshowcase.mp4",
     description: "Saveur Ramen is a high-performance web experience designed for a modern Japanese restaurant. It features a seamless, visually stunning interface that highlights the artistry of ramen preparation. Built with Next.js and Framer Motion, it offers smooth transitions and a premium feel that matches the restaurant's aesthetic.",
     externalLink: {
-      label: "Watch Showcase Video",
-      url: "https://youtube.com",
+      label: "Open Website",
+      url: "https://saveur-ramen.vercel.app",
     },
   },
   "Soirée Inter-Facs": {
     videoSrc: "/interfacsshowcasevideo.mp4",
-    description: "Soirée Inter-Facs is a comprehensive event management and ticketing platform for university parties. It handles high-traffic registrations, real-time ticket validation, and features a dynamic social feed for attendees. The project focuses on scalability and ease of use for both organizers and students.",
+    description: "Soirée Inter-Facs is a comprehensive event management and ticketing platform for university parties. It handles high-traffic registrations, real-time ticket validation, and features a dynamic social feed for attendees. The project focuses on scalability and ease of use for organizers and students.",
     externalLink: {
-      label: "Watch YouTube Video",
-      url: "https://youtube.com",
+      label: "Open Website",
+      url: "https://soiree-inter-facs.vercel.app",
     },
   },
 }
 
-export function WebShortcut({ id, name }: { id: string; name: string }) {
+export function WebShortcut({ id, name, onOpenApp }: { id: string; name: string; onOpenApp?: Function }) {
   const data = projectData[name] || {
     description: "Project documentation for " + name + ". Access restricted to authorized personnel.",
   }
@@ -72,15 +72,19 @@ export function WebShortcut({ id, name }: { id: string; name: string }) {
         {/* Footer Link */}
         {data.externalLink && (
           <div className="pt-2 pb-4">
-            <a 
-              href={data.externalLink.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-600 text-sm md:text-base font-medium flex items-center gap-1 group w-fit"
+            <button 
+              onClick={() => {
+                if (onOpenApp) {
+                  onOpenApp("safari", data.externalLink?.url)
+                } else {
+                  window.open(data.externalLink?.url, "_blank")
+                }
+              }}
+              className="text-blue-500 hover:text-blue-600 text-sm md:text-base font-medium flex items-center gap-1 group w-fit cursor-pointer bg-transparent border-none p-0"
             >
               {data.externalLink.label}
               <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+            </button>
           </div>
         )}
       </div>

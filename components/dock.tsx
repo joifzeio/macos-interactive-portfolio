@@ -48,7 +48,7 @@ export function Dock({ onAppClick, minimizedWindows, onUnminimize, onLaunchpadCl
   return (
     <>
       <div
-        className={`fixed z-50 transition-all duration-300 ${
+        className={`fixed z-40 transition-all duration-300 ${
           isMobile ? "left-2 top-1/2 -translate-y-1/2" : "bottom-2 left-1/2 -translate-x-1/2"
         }`}
       >
@@ -156,7 +156,7 @@ export function Dock({ onAppClick, minimizedWindows, onUnminimize, onLaunchpadCl
       {/* Context menu */}
       {contextMenu && (
         <div
-          className="fixed bg-[var(--macos-menu-bg)] macos-blur border border-black/10 rounded-lg shadow-lg py-1 z-[60] min-w-[180px]"
+          className="fixed bg-[var(--macos-menu-bg)] macos-blur border border-black/10 rounded-lg shadow-lg py-1 z-[100] min-w-[180px]"
           style={{ left: contextMenu.x, top: contextMenu.y - 100 }}
           onClick={() => setContextMenu(null)}
         >
