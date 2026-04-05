@@ -6,42 +6,39 @@ export function Readme() {
       <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
         <div className="max-w-3xl mx-auto space-y-6 text-[14px] md:text-[15px] leading-relaxed">
           <section>
-            <h1 className="text-lg font-bold mb-4"># Welcome to gucduck</h1>
+            <h1 className="text-lg font-bold mb-4"># Welcome to Nathan's Portfolio</h1>
             <p>
-              You made it. No need to duck and cover. This is Chris’s little corner of the internet and you are invited to waddle through it.
+              You've arrived at my personal, interactive macOS-inspired workspace. Feel free to explore my projects, skills, and creative experiments.
             </p>
           </section>
 
           <section>
             <h2 className="font-bold mb-2">## What is this place</h2>
             <p>
-              gucduck is a personal website that looks and feels like macOS, the operating system on Apple computers. Everything is interactive. Click. Drag. Open. Waddle.
+              This is a digital home built to showcase high-performance web experiences. Built using Next.js and Framer Motion, it’s a sandbox for modern front-end development and a mirror of the tools I use every day.
             </p>
           </section>
 
           <section>
             <h2 className="font-bold mb-2">## How to get around</h2>
-            <h3 className="font-bold mb-2">### The desktop</h3>
+            <h3 className="font-bold mb-2">### The Desktop</h3>
             <p>
-              The desktop icons are little highlights and random treasures from my life. Projects. Experiments. Stories. Each one opens something worth poking around.
+              The desktop icons represent my key work. Open <strong>Saveur Ramen</strong> for a modern Japanese restaurant web experience, or <strong>Soirée Inter-Facs</strong> for an event ticketing hub. Each project is designed with a premium, user-centric focus.
             </p>
           </section>
 
           <section>
-            <h3 className="font-bold mb-2">### The dock</h3>
+            <h3 className="font-bold mb-2">### The Dock</h3>
             <p>
-              On desktop, the dock lives at the bottom of the screen. On mobile, it shifts to the left side.
-            </p>
-            <p className="mt-4">
-              This is where the main apps live.
+              At the bottom (or the side on mobile), you'll find the main apps.
             </p>
             <ul className="mt-4 space-y-1">
-              <li>Finder lets you browse files.</li>
-              <li>Notes holds written thoughts.</li>
-              <li>Photos shows my photography.</li>
-              <li>Music plays tracks.</li>
-              <li>Terminal runs commands.</li>
-              <li>Apps opens the full launcher with even more things like Photo Booth, Stocks, and other surprises.</li>
+              <li><strong>Finder</strong>: Browse my project documentation.</li>
+              <li><strong>Messages</strong>: My take on messaging platforms.</li>
+              <li><strong>Safari</strong>: My internal browser for exploring external links natively.</li>
+              <li><strong>GitHub</strong>: A quick jump into my coding world.</li>
+              <li><strong>Terminal</strong>: For power users and command line enthusiasts.</li>
+              <li><strong>Launchpad</strong>: Access even more apps like VSCode, GitHub, and other surprises.</li>
             </ul>
           </section>
         </div>
