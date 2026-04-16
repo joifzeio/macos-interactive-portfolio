@@ -31,6 +31,7 @@ import { Readme } from "./apps/readme"
 
 export type AppType =
   | "finder"
+  | "mail"
   | "safari"
   | "messages"
   | "settings"
@@ -338,6 +339,13 @@ export function MacOSDesktop() {
     switch (app) {
       case "finder":
         return <Finder initialFolder={title} onFileOpen={openApp} />
+      case "mail":
+        return (
+          <div className="h-full flex flex-col items-center justify-center bg-gray-50 text-gray-400">
+            <div className="text-6xl mb-4">📧</div>
+            <p className="text-sm font-medium">Inbox is empty</p>
+          </div>
+        )
       case "safari":
         return <Safari initialUrl={title.startsWith("http") ? title : undefined} />
       case "messages":

@@ -14,6 +14,19 @@ export const FinderIcon = () => (
   </div>
 )
 
+export const MailIcon = () => (
+  <div className="w-full h-full rounded-[22%] overflow-hidden relative sharp-icon">
+    <Image
+      src="/app_mail.webp"
+      alt="Mail"
+      fill
+      sizes="256px"
+      quality={100}
+      className="object-cover"
+    />
+  </div>
+)
+
 export const SafariIcon = () => (
   <div className="w-full h-full rounded-[22%] overflow-hidden relative sharp-icon">
     <Image
@@ -77,7 +90,7 @@ export const MusicIcon = () => (
 export const NotesIcon = () => (
   <div className="w-full h-full rounded-[22%] overflow-hidden relative sharp-icon">
     <Image
-      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/notes_macos_bigsur_icon_189901-y0UlhiIg1eRRO2QrupDcgrpio0AqcE.png"
+      src="/app_notes.webp"
       alt="Notes"
       fill
       sizes="256px"

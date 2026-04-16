@@ -6,6 +6,7 @@ import { useState } from "react"
 import type { AppType, WindowState } from "./macos-desktop"
 import {
   FinderIcon,
+  MailIcon,
   SafariIcon,
   MessagesIcon,
   NotesIcon,
@@ -28,6 +29,7 @@ interface DockProps {
 
 const dockApps = [
   { id: "finder" as AppType, icon: FinderIcon, label: "Finder" },
+  { id: "mail" as AppType, icon: MailIcon, label: "Mail" },
   { id: "safari" as AppType, icon: SafariIcon, label: "Safari" },
   { id: "messages" as AppType, icon: MessagesIcon, label: "Messages" },
   { id: "notes" as AppType, icon: NotesIcon, label: "Notes" },
