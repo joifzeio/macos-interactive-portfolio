@@ -47,6 +47,7 @@ export type AppType =
   | "ops"
   | "readme"
   | "web-shortcut"
+  | "trash"
 
 export interface WindowState {
   id: string
@@ -361,6 +362,13 @@ export function MacOSDesktop() {
         return <GitBash />
       case "web-shortcut":
         return <WebShortcut id={app} name={title} onOpenApp={openApp} />
+      case "trash":
+        return (
+          <div className="h-full flex flex-col items-center justify-center bg-gray-50 text-gray-400">
+            <div className="text-6xl mb-4">🗑️</div>
+            <p className="text-sm font-medium">Trash is empty</p>
+          </div>
+        )
       default:
         return (
           <div className="p-8 h-full flex flex-col items-center justify-center text-center gap-4 bg-slate-900 text-white">

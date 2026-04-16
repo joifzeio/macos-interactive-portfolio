@@ -188,3 +188,24 @@ export const VideoCardIcon = ({ src }: { src: string }) => (
     <video src={src} autoPlay muted loop playsInline className="max-w-full max-h-full object-contain" />
   </div>
 )
+export const TrashIcon = () => (
+  <div className="w-full h-full p-[10%] flex items-center justify-center relative sharp-icon">
+    <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-lg" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="trash-body" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#e2e3e5" />
+          <stop offset="50%" stopColor="#f8f9fa" />
+          <stop offset="100%" stopColor="#e2e3e5" />
+        </linearGradient>
+      </defs>
+      {/* Metallic Body */}
+      <path d="M12 14 L52 14 L46 58 C46 60.2 44.2 62 42 62 L22 62 C19.8 62 18 60.2 18 58 L12 14 Z" fill="url(#trash-body)" stroke="#aeb2b7" strokeWidth="0.5" />
+      {/* Vertical Ridges */}
+      <line x1="24" y1="18" x2="26" y2="58" stroke="#ced4da" strokeWidth="1" strokeLinecap="round" />
+      <line x1="32" y1="18" x2="32" y2="58" stroke="#ced4da" strokeWidth="1" strokeLinecap="round" />
+      <line x1="40" y1="18" x2="38" y2="58" stroke="#ced4da" strokeWidth="1" strokeLinecap="round" />
+      {/* Top Rim */}
+      <rect x="10" y="10" width="44" height="4" rx="2" fill="#adb5bd" />
+    </svg>
+  </div>
+)

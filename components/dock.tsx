@@ -14,6 +14,7 @@ import {
   DockerIcon,
   GitHubIcon,
   LaunchpadIcon,
+  TrashIcon,
 } from "./app-icons"
 
 interface DockProps {
@@ -53,7 +54,7 @@ export function Dock({ onAppClick, minimizedWindows, onUnminimize, onLaunchpadCl
         }`}
       >
         <div
-          className={`bg-white/30 macos-blur macos-dock-shadow rounded-2xl p-2 flex gap-1 border border-white/20 ${
+          className={`bg-white/20 backdrop-blur-2xl macos-dock-shadow rounded-2xl p-1.5 flex gap-1.5 border border-white/20 ${
             isMobile ? "flex-col items-center" : "flex-row items-end"
           }`}
         >
@@ -136,20 +137,34 @@ export function Dock({ onAppClick, minimizedWindows, onUnminimize, onLaunchpadCl
           })}
 
           {/* Divider */}
-          {minimizedWindows.length > 0 && (
-            <div className={`${isMobile ? "h-px w-8 my-1" : "w-px h-12 mx-1"} bg-white/30`} />
-          )}
+          <div className={`${isMobile ? "h-px w-8 my-1" : "w-px h-10 mx-1"} bg-white/20`} />
 
-          {/* Minimized windows */}
-          {minimizedWindows.map((window) => (
-            <button
-              key={window.id}
-              className="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-white/50 flex items-center justify-center text-xl md:text-2xl shadow-lg hover:scale-110 transition-transform"
-              onClick={() => onUnminimize(window.id)}
+          {/* Trash icon */}
+          <button
+            className="relative group transition-transform duration-200 ease-out"
+            style={{
+              transform:
+                hoveredApp === "trash"
+                  ? isMobile
+                    ? "scale(1.2) translateX(8px)"
+                    : "scale(1.2) translateY(-8px)"
+                  : "scale(1)",
+            }}
+            onClick={() => onAppClick("trash" as AppType, "Trash")}
+            onMouseEnter={() => setHoveredApp("trash")}
+            onMouseLeave={() => setHoveredApp(null)}
+          >
+            <div className="w-10 h-10 md:w-14 md:h-14 overflow-hidden">
+              <TrashIcon />
+            </div>
+            <div
+              className={`absolute bg-gray-800/90 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none ${
+                isMobile ? "left-full ml-4 top-1/2 -translate-y-1/2" : "-top-10 left-1/2 -translate-x-1/2"
+              }`}
             >
-              📄
-            </button>
-          ))}
+              Trash
+            </div>
+          </button>
         </div>
       </div>
 
